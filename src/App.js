@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import "antd/dist/reset.css";
 import axios from "axios";
 import Loader from "./Components/Loader";
 import ProfileList from "./Components/ProfileList";
+import { addUser } from "./redux/action/user";
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [userDetails, setUserDetails] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     getUserDetails();
@@ -23,7 +25,7 @@ const App = () => {
       setIsLoading(false);
       if (response?.status === 200) {
         const userData = response?.data;
-        setUserDetails(userData);
+        dispatch(addUser(userData));
       }
     } catch (err) {
       setIsLoading(false);
@@ -31,18 +33,10 @@ const App = () => {
     }
   };
 
-  const onDelete = (id) => {
-    setUserDetails([...userDetails.filter((item) => item.id !== id)]);
-  };
+  const userDetails = useSelector((state) => state.userData);
 
   return (
-    <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <ProfileList userDetails={userDetails} onDelete={onDelete} />
-      )}
-    </>
+    <>{isLoading ? <Loader /> : <ProfileList userDetails={userDetails} />}</>
   );
 };
 

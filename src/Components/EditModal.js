@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { Modal, Form, Input, Button } from "antd";
+import { editUser } from "../redux/action/user";
 
 const editFormRules = {
   username: [
@@ -49,6 +51,7 @@ const buttonWrapperStyle = {
 
 const EditModal = ({ open, close, editData }) => {
   const [form] = Form.useForm();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     form.setFieldsValue({
@@ -61,7 +64,12 @@ const EditModal = ({ open, close, editData }) => {
 
   const onEdit = () => {
     form.validateFields().then((values) => {
-      console.log(values);
+      const edited = {
+        ...editData,
+        ...values,
+      };
+      dispatch(editUser(edited));
+      close();
     });
   };
   return (

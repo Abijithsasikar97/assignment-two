@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { Row, Col } from "antd";
 import { Card } from "antd";
 import {
@@ -12,6 +13,7 @@ import {
   GlobalOutlined,
 } from "@ant-design/icons";
 import EditModal from "./EditModal";
+import { deleteUser } from "../redux/action/user";
 
 const contentWrapperStyle = {
   display: "flex",
@@ -21,7 +23,8 @@ const paragraphStyle = {
   marginLeft: "10px",
 };
 
-const ProfileList = ({ userDetails, onDelete }) => {
+const ProfileList = ({ userDetails }) => {
+  const dispatch = useDispatch();
   const [favoriteUser, setFavoriteUser] = useState([]);
   const editInitialState = {
     isOpenModal: false,
@@ -46,6 +49,10 @@ const ProfileList = ({ userDetails, onDelete }) => {
 
   const closeModal = () => {
     setEditUser(editInitialState);
+  };
+
+  const onDelete = (id) => {
+    dispatch(deleteUser(id));
   };
 
   return (
@@ -114,7 +121,6 @@ const ProfileList = ({ userDetails, onDelete }) => {
 
 ProfileList.propTypes = {
   userDetails: PropTypes.array.isRequired,
-  onDelete: PropTypes.func.isRequired,
 };
 
 export default ProfileList;
