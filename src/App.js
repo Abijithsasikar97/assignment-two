@@ -1,25 +1,49 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
+import "antd/dist/reset.css";
+import axios from "axios";
+import Loader from "./Components/Loader";
+import ProfileList from "./Components/ProfileList";
 
-function App() {
+const App = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [userDetails, setUserDetails] = useState([]);
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
+
+  const getUserDetails = async () => {
+    setIsLoading(true);
+
+    try {
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/users`
+      );
+      setIsLoading(false);
+      if (response?.status === 200) {
+        const userData = response?.data;
+        setUserDetails(userData);
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.log("Error in getUserDetails: ", err);
+    }
+  };
+
+  const onDelete = (id) => {
+    setUserDetails([...userDetails.filter((item) => item.id !== id)]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <ProfileList userDetails={userDetails} onDelete={onDelete} />
+      )}
+    </>
   );
-}
+};
 
 export default App;
