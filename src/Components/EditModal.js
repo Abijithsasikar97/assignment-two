@@ -6,7 +6,7 @@ import { Modal, Form, Input, Button } from "antd";
 import { editUser } from "../redux/action/user";
 
 const editFormRules = {
-  username: [
+  name: [
     {
       required: true,
       message: "Name is required",
@@ -56,7 +56,7 @@ const EditModal = ({ open, close, editData }) => {
 
   useEffect(() => {
     form.setFieldsValue({
-      username: editData?.username,
+      name: editData?.name,
       email: editData?.email,
       phone: editData?.phone,
       website: editData?.website,
@@ -87,7 +87,7 @@ const EditModal = ({ open, close, editData }) => {
         name="editUser-form"
         onFinish={onEdit}
       >
-        <Form.Item name="username" label="Name" rules={editFormRules.username}>
+        <Form.Item name="name" label="Name" rules={editFormRules.name}>
           <Input type="text" />
         </Form.Item>
         <Form.Item name="email" label="Email" rules={editFormRules.email}>

@@ -91,7 +91,7 @@ const ProfileList = ({ userDetails }) => {
                 />,
               ]}
             >
-              <h3>{user?.username}</h3>
+              <h3>{user?.name}</h3>
               <div style={contentWrapperStyle}>
                 <MailOutlined size="18" key="mail" />{" "}
                 <p style={paragraphStyle}>{user?.email}</p>
